@@ -18,6 +18,8 @@ require('./styles.css');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -55,7 +57,7 @@ var TimeRangeSlider = function (_Component) {
       if (minutes.length == 1) minutes = '0' + minutes;
       if (minutes == 0) minutes = '00';
       if (this.props.format == 12) {
-        ampm = "AM";
+        ampm = 'AM';
         if (hours >= 12) {
           if (hours == 12) {
             hours = hours;
@@ -64,7 +66,7 @@ var TimeRangeSlider = function (_Component) {
             hours = hours - 12;
             minutes = minutes;
           }
-          ampm = "PM";
+          ampm = 'PM';
         }
         if (hours == 0) {
           hours = 12;
@@ -79,9 +81,9 @@ var TimeRangeSlider = function (_Component) {
     value: function timeToMinute(time) {
       var rMinutes = 1439;
       if (this.props.format == 24) {
-        time = time.split(":");
+        time = time.split(':');
         if (time.length < 2) {
-          throw new Error("Invalid time");
+          throw new Error('Invalid time');
         }
         var hours = time[0],
             minutes = parseInt(time[1]);
@@ -89,16 +91,16 @@ var TimeRangeSlider = function (_Component) {
         rMinutes = hours + minutes;
       } else {
         time = time.toUpperCase();
-        time = time.replace(" ", "");
-        var ampm = time.indexOf("AM") != -1 ? "AM" : "PM";
-        time = time.replace(ampm, "");
-        time = time.split(":");
+        time = time.replace(' ', '');
+        var ampm = time.indexOf('AM') != -1 ? 'AM' : 'PM';
+        time = time.replace(ampm, '');
+        time = time.split(':');
         if (time.length < 2) {
-          throw new Error("Invalid time");
+          throw new Error('Invalid time');
         }
         var _hours = parseInt(time[0]),
             _minutes = parseInt(time[1]);
-        if (ampm == "PM") {
+        if (ampm == 'PM') {
           if (_hours != 12) {
             _hours = _hours + 12;
           }
@@ -112,49 +114,39 @@ var TimeRangeSlider = function (_Component) {
     }
   }, {
     key: 'onChange',
-    value: function onChange(value) {
+    value: function onChange(key, value) {
       var start = this.minuteToTime(value.min);
       var end = this.minuteToTime(value.max);
-      var nStart = start.hours + ":" + start.minutes;
-      var nEnd = end.hours + ":" + end.minutes;
+      var nStart = start.hours + ':' + start.minutes;
+      var nEnd = end.hours + ':' + end.minutes;
       if (this.props.format == 12) {
-        nStart += " " + start.am_pm;
-        nEnd += " " + end.am_pm;
+        nStart += ' ' + start.am_pm;
+        nEnd += ' ' + end.am_pm;
       }
-      this.props.onChange({
-        start: nStart,
-        end: nEnd
-      });
+      this.props.onChange(_defineProperty({}, key, { start: nStart, end: nEnd }));
     }
   }, {
     key: 'onChangeComplete',
-    value: function onChangeComplete(value) {
+    value: function onChangeComplete(key, value) {
       var start = this.minuteToTime(value.min),
           end = this.minuteToTime(value.max);
-      this.props.onChangeComplete({
-        start: start,
-        end: end
-      });
+      this.props.onChangeComplete(_defineProperty({}, key, { start: start, end: end }));
     }
   }, {
     key: 'onChangeStart',
-    value: function onChangeStart(value) {
+    value: function onChangeStart(key, value) {
       var start = this.minuteToTime(value.min),
           end = this.minuteToTime(value.max);
-      this.props.onChangeStart({
-        start: start,
-        end: end
-      });
+      this.props.onChangeStart(_defineProperty({}, key, { start: start, end: end }));
     }
   }, {
     key: 'render',
     value: function render() {
-      var _props$value = this.props.value,
-          start = _props$value.start,
-          end = _props$value.end,
-          min = this.timeToMinute(start),
-          max = this.timeToMinute(end);
+      var key = this.props.value.key;
+      var start = key.start,
+          end = key.end;
 
+      min = this.timeToMinute(start), max = this.timeToMinute(end);
       return _react2.default.createElement(_reactInputRange2.default, {
         disabled: this.props.disabled,
         draggableTrack: this.props.draggableTrack,
@@ -163,8 +155,9 @@ var TimeRangeSlider = function (_Component) {
         onChangeStart: this.onChangeStart.bind(this),
         onChange: this.onChange.bind(this),
         onChangeComplete: this.onChangeComplete.bind(this),
-        step: 15,
-        value: { min: min, max: max } });
+        step: this.props.step,
+        value: { min: min, max: max }
+      });
     }
   }]);
 
@@ -175,15 +168,15 @@ TimeRangeSlider.defaultProps = {
   disabled: false,
   draggableTrack: false,
   format: 24,
-  maxValue: "23:59",
-  minValue: "00:00",
+  maxValue: '23:59',
+  minValue: '00:00',
   onChange: function onChange() {},
   onChangeComplete: function onChangeComplete() {},
   onChangeStart: function onChangeStart() {},
   step: 15,
   value: {
-    start: "00:00",
-    end: "23:59"
+    start: '00:00',
+    end: '23:59'
   }
 };
 
