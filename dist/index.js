@@ -142,9 +142,9 @@ var TimeRangeSlider = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var key = this.props.value.key;
-      var start = key.start,
-          end = key.end;
+      var _props$value$key = this.props.value.key,
+          start = _props$value$key.start,
+          end = _props$value$key.end;
 
       min = this.timeToMinute(start), max = this.timeToMinute(end);
       return _react2.default.createElement(_reactInputRange2.default, {

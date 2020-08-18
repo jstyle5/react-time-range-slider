@@ -109,8 +109,7 @@ class TimeRangeSlider extends Component {
   }
 
   render() {
-    let { key } = this.props.value;
-    let { start, end } = key;
+    let { start, end } = this.props.value.key;
     (min = this.timeToMinute(start)), (max = this.timeToMinute(end));
     return (
       <InputRange
